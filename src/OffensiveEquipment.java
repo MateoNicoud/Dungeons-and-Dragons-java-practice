@@ -17,5 +17,4 @@ public abstract class OffensiveEquipment {
         return attackPower;
     }
 
-    // Vous pouvez ajouter d'autres méthodes et attributs communs à tous les équipements défensifs ici
 }
