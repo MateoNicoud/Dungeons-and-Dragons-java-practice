@@ -32,4 +32,7 @@ public abstract class Character {
     public boolean isSecondaryHand() {
         return secondaryHand;
     }
+    public String getName() {
+        return this.name;
+    }
 }
