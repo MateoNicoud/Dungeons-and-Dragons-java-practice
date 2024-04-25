@@ -1,13 +1,9 @@
 public class PaperCraftShield extends DefensiveEquipment {
-    private final int defensePower;
 
     public PaperCraftShield() {
-        super("PaperCraftShield");
-        this.defensePower = 1;
+        super("Bouclier en papier mâché",3);
     }
 
-    public int getDefensePower() {
-        return defensePower;
-    }
+
 
 }
