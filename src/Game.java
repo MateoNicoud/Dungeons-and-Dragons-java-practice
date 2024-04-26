@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Game {
     private final Menu menu;
 
@@ -8,31 +6,11 @@ public class Game {
     }
 
     public Character CharacterBuilder() {
-        Scanner reader = new Scanner(System.in);
 
-        System.out.println("Bonjour, quel est votre nom?");
-        String name = reader.nextLine();
-        while (name.equals("menu")) {
-            menu.displayMenu();
-            System.out.println("Bonjour, quel est votre nom?");
-            name = reader.nextLine();
-        }
-        System.out.println("Quel est votre job? (guerrier/magicien)");
-        String job = reader.nextLine();
-        if (job.equals("menu")) {
-            menu.displayMenu();
-        }
-        while (!job.equals("guerrier") && !job.equals("magicien")) {
-            System.out.println("Veuillez choisir entre guerrier et magicien");
-
-            job = reader.nextLine();
-            if (job.equals("menu")) {
-                menu.displayMenu();
-            }
-        }
-
+        String name = menu.getCharacterName();
+        String job = menu.getCharacterJob();
         System.out.println("Voulez vous un équipement dans votre main secondaire? (oui/non)");
-        boolean hasDefensiveEquipment = reader.nextLine().equals("oui");
+        boolean hasDefensiveEquipment = menu.getSecondHand();
 
         Character newCharacter;
         if (job.equals("guerrier")) {
@@ -45,7 +23,6 @@ public class Game {
     }
 
     public void Play(Character character) {
-        Scanner reader = new Scanner(System.in);
 
         boolean end = false;
         while (!end) {
@@ -63,11 +40,9 @@ public class Game {
                 board.moveCharacter(character, throwedDice);
                 boxIndex = board.getBoxOfCharacter(character);
             }
-            System.out.println(character.getName() + " a terminé le donjon");
             boolean goodResponse = false;
             while (!goodResponse) {
-                System.out.println("Veut tu recommencer avec ce personnage ? (oui/non)");
-                String restart = reader.nextLine();
+                String restart = menu.getRestartResponse();
                 switch (restart) {
                     case "non" -> {
 
