@@ -20,4 +20,18 @@ public class Board {
         }
         return -1;
     }
+    public void moveCharacter(Character character, int steps){
+        int currentBoxIndex = getBoxOfCharacter(character);
+        if(currentBoxIndex!=1){
+            int newBoxIndex = currentBoxIndex + steps;
+            while (currentBoxIndex < newBoxIndex) {
+                boxes[currentBoxIndex].setCharacter(null);
+                currentBoxIndex++;
+                if (currentBoxIndex < boxes.length) {
+                    boxes[currentBoxIndex].setCharacter(character);
+                    System.out.println("avancement :" + (currentBoxIndex+1));
+                }
+            }
+        }
+    }
 }

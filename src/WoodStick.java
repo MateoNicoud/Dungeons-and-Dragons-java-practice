@@ -1,7 +1,7 @@
 public class WoodStick extends OffensiveEquipment{
 
     public WoodStick(){
-        super("Une brindille",3);
+        super("Catalyseur","Une brindille",3);
     }
 
 }

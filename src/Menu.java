@@ -6,7 +6,8 @@ public class Menu {
     public Menu() {
         this.reader = new Scanner(System.in);
     }
-    public void displayMenu(){
+
+    public void displayMenu() {
         String userChoice;
         do {
             System.out.println("""
@@ -14,20 +15,21 @@ public class Menu {
                     2. Changer d'équipement
                     3. Quitter le jeu""");
 
-            userChoice= reader.nextLine();
+            userChoice = reader.nextLine();
 
-        switch (userChoice){
-            case "1":
-                //Reprendre le jeu
-                break;
-            case "2":
-                //Changer d'équipement
-                break;
-            case "3":
-                System.out.println("Fermeture du jeu");
-                System.exit(0);
-                break;
-        }}while (!userChoice.equals("1"));
+            switch (userChoice) {
+                case "1":
+                    //Reprendre le jeu
+                    break;
+                case "2":
+                    //Changer d'équipement
+                    break;
+                case "3":
+                    System.out.println("Fermeture du jeu");
+                    System.exit(0);
+                    break;
+            }
+        } while (!userChoice.equals("1"));
 
     }
 }

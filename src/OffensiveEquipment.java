@@ -1,10 +1,12 @@
 public abstract class OffensiveEquipment {
     private final String name;
     private final int attackPower;
+    private final String type;
 
-    public OffensiveEquipment(String name, int attackPower) {
+    public OffensiveEquipment(String type, String name, int attackPower) {
         this.name = name;
         this.attackPower = attackPower;
+        this.type = type;
     }
 
     @Override
@@ -13,8 +15,12 @@ public abstract class OffensiveEquipment {
     }
 
 
-    public int getAttackPower(){
+    public int getAttackPower() {
         return attackPower;
+    }
+
+    public String getType() {
+        return type;
     }
 
 }

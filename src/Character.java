@@ -2,15 +2,17 @@ public abstract class Character {
 
 
     private final String name;
-    public String job;
-    public final boolean secondaryHand;
-    public int health=0;
-    public int attackPower =0;
-    public int defensePower =0;
-    public OffensiveEquipment OffensiveEquipment;
-    public DefensiveEquipment DefensiveEquipment;
+    private String job;
 
-    public Character(String name,String job, boolean secondaryHand) {
+
+    private final boolean secondaryHand;
+    private int health = 0;
+    private int attackPower = 0;
+    private int defensePower = 0;
+    private OffensiveEquipment OffensiveEquipment;
+    private DefensiveEquipment DefensiveEquipment;
+
+    public Character(String name, boolean secondaryHand) {
         this.name = name;
         this.secondaryHand = secondaryHand;
     }
@@ -24,15 +26,68 @@ public abstract class Character {
         System.out.println("Défense: " + defensePower);
         System.out.println("Puissance d'attaque: " + attackPower);
         System.out.println("Equipement offensif: " + OffensiveEquipment);
-        if(DefensiveEquipment!=null) {
+        if (DefensiveEquipment != null) {
             System.out.println("Equipement défensif: " + DefensiveEquipment);
         }
+    }
+
+    public boolean getIsSecondaryHand() {
+        return secondaryHand;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public boolean isSecondaryHand() {
         return secondaryHand;
     }
-    public String getName() {
-        return this.name;
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
+    public int getDefensePower() {
+        return defensePower;
+    }
+
+    public void setDefensePower(int defensePower) {
+        this.defensePower = defensePower;
+    }
+
+    public OffensiveEquipment getOffensiveEquipment() {
+        return OffensiveEquipment;
+    }
+
+    public void setOffensiveEquipment(OffensiveEquipment offensiveEquipment) {
+        OffensiveEquipment = offensiveEquipment;
+    }
+
+    public DefensiveEquipment getDefensiveEquipment() {
+        return DefensiveEquipment;
+    }
+
+    public void setDefensiveEquipment(DefensiveEquipment defensiveEquipment) {
+        DefensiveEquipment = defensiveEquipment;
     }
 }

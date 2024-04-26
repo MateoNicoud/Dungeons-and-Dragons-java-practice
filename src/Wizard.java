@@ -1,20 +1,20 @@
 public class Wizard extends Character {
 
     public Wizard(String name, String job, boolean secondaryHand) {
-        super(name,job, secondaryHand);
+        super(name, secondaryHand);
         int baseHealth = 6;
         int baseAttackPower = 15;
         int baseDefense = 0;
-        this.job = job;
-        this.OffensiveEquipment = new WoodStick();
+        this.setJob(job);
+        this.setOffensiveEquipment(new WoodStick());
         if (secondaryHand) {
-            this.DefensiveEquipment = new BottleOfWater();
+            this.setDefensiveEquipment(new BottleOfWater());
         }
-        assert this.OffensiveEquipment != null : "L'équipement offensif ne doit pas être null";
-        this.health = baseHealth;
-        this.attackPower = baseAttackPower+this.OffensiveEquipment.getAttackPower();
+        assert this.getOffensiveEquipment() != null : "L'équipement offensif ne doit pas être null";
+        this.setHealth(baseHealth);
+        this.setAttackPower(baseAttackPower + this.getOffensiveEquipment().getAttackPower());
         if (secondaryHand) {
-            this.defensePower = baseDefense + this.DefensiveEquipment.getDefensePower();
+            this.setDefensePower(baseDefense + this.getDefensiveEquipment().getDefensePower());
         }
     }
 }
