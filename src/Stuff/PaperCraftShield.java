@@ -1,3 +1,5 @@
+package Stuff;
+
 public class PaperCraftShield extends DefensiveEquipment {
 
     public PaperCraftShield() {

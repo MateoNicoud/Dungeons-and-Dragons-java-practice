@@ -1,3 +1,5 @@
+package Stuff;
+
 public class BottleOfWater extends DefensiveEquipment {
 
     public BottleOfWater() {

@@ -1,3 +1,8 @@
+package Character;
+
+import Stuff.FoamSword;
+import Stuff.PaperCraftShield;
+
 public class Warrior extends Character {
 
 

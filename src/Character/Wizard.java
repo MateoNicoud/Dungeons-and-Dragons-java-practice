@@ -1,3 +1,8 @@
+package Character;
+
+import Stuff.BottleOfWater;
+import Stuff.WoodStick;
+
 public class Wizard extends Character {
 
     public Wizard(String name, String job, boolean secondaryHand) {

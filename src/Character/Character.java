@@ -1,3 +1,8 @@
+package Character;
+
+import Stuff.DefensiveEquipment;
+import Stuff.OffensiveEquipment;
+
 public abstract class Character {
 
 
@@ -9,8 +14,8 @@ public abstract class Character {
     private int health = 0;
     private int attackPower = 0;
     private int defensePower = 0;
-    private OffensiveEquipment OffensiveEquipment;
-    private DefensiveEquipment DefensiveEquipment;
+    private Stuff.OffensiveEquipment OffensiveEquipment;
+    private Stuff.DefensiveEquipment DefensiveEquipment;
 
     public Character(String name, boolean secondaryHand) {
         this.name = name;

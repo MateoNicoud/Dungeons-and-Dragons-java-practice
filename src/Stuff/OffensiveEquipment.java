@@ -1,3 +1,5 @@
+package Stuff;
+
 public abstract class OffensiveEquipment {
     private final String name;
     private final int attackPower;
