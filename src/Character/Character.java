@@ -8,6 +8,7 @@ public abstract class Character {
 
     private final String name;
     private String job;
+    private final Inventory inventory;
 
 
     private final boolean secondaryHand;
@@ -20,6 +21,13 @@ public abstract class Character {
     public Character(String name, boolean secondaryHand) {
         this.name = name;
         this.secondaryHand = secondaryHand;
+        this.inventory = new Inventory();
+    }
+    public void addToInventory(Stuff.Items item){
+        this.inventory.addItems(item);
+    }
+    public void displayInventory(){
+        this.inventory.displayInventory();
     }
 
 

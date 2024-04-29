@@ -1,28 +1,19 @@
 package Stuff;
 
-public abstract class OffensiveEquipment {
-    private final String name;
-    private final int attackPower;
-    private final String type;
-
-    public OffensiveEquipment(String type, String name, int attackPower) {
-        this.name = name;
-        this.attackPower = attackPower;
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-
+public abstract class OffensiveEquipment extends Items {
     public int getAttackPower() {
         return attackPower;
     }
 
-    public String getType() {
-        return type;
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
+    private int attackPower;
+
+    public OffensiveEquipment(String type, String name, int attackPower) {
+        super(type,name);
+        this.attackPower = attackPower;
     }
 
 }

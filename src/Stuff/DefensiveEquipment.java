@@ -1,21 +1,18 @@
 package Stuff;
 
-public abstract class DefensiveEquipment {
-    private final String name;
-    private final int defensePower;
+public abstract class DefensiveEquipment extends Items {
+    public int getDefensePower() {
+        return defensePower;
+    }
 
-    public DefensiveEquipment(String name, int defensePower) {
-        this.name = name;
+    public void setDefensePower(int defensePower) {
         this.defensePower = defensePower;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public int getDefensePower(){
-        return defensePower;
+    private int defensePower;
+    public DefensiveEquipment(String type, String name, int defensePower) {
+        super(type,name);
+        this.defensePower = defensePower;
     }
 
 }

@@ -1,6 +1,6 @@
 package Character;
 
-import Stuff.DefensiveEquipement.BottleOfWater;
+import Stuff.DefensiveEquipement.ArcaneShield;
 import Stuff.OffensiveEquipement.WoodStick;
 
 public class Wizard extends Character {
@@ -13,7 +13,7 @@ public class Wizard extends Character {
         this.setJob(job);
         this.setOffensiveEquipment(new WoodStick());
         if (secondaryHand) {
-            this.setDefensiveEquipment(new BottleOfWater());
+            this.setDefensiveEquipment(new ArcaneShield());
         }
         assert this.getOffensiveEquipment() != null : "L'équipement offensif ne doit pas être null";
         this.setHealth(baseHealth);
@@ -21,5 +21,6 @@ public class Wizard extends Character {
         if (secondaryHand) {
             this.setDefensePower(baseDefense + this.getDefensiveEquipment().getDefensePower());
         }
+        this.displayInventory();
     }
 }

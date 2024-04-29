@@ -13,7 +13,7 @@ public class Menu {
         do {
             System.out.println("""
                     1. Reprendre le jeu
-                    2. Changer d'équipement
+                    2. Ouvrir l'inventaire
                     3. Quitter le jeu""");
 
             userChoice = reader.nextLine();
@@ -23,7 +23,7 @@ public class Menu {
                     //Reprendre le jeu
                     break;
                 case "2":
-                    //Changer d'équipement
+                    //Ouvrir l'inventaire
                     break;
                 case "3":
                     System.out.println("Fermeture du jeu");
