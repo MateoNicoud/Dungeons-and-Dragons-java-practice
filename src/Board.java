@@ -1,3 +1,4 @@
+import Character.Character;
 public class Board {
     private final Box[] boxes;
 

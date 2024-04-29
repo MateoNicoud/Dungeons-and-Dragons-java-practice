@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
+
 public class Menu {
-    private Scanner reader;
+    private final Scanner reader;
 
     public Menu() {
         this.reader = new Scanner(System.in);
@@ -48,6 +49,8 @@ public class Menu {
         }
         return name;
     }
+
+
     public String getCharacterJob(){
         System.out.println("Quel est votre job? (guerrier/magicien)");
         String job = reader.nextLine();
@@ -65,10 +68,12 @@ public class Menu {
         return job;
     }
 
+    //Choix d'équiper un objet dans la main secondaire
     public boolean getSecondHand(){
         return reader.nextLine().equals("oui");
     }
 
+    //Lancement des jets de dés
     public void getEnter(){
         System.out.println("Appuie sur entrée pour lancer les dès");
         String enter = reader.nextLine();

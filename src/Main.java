@@ -1,3 +1,5 @@
+import Character.Character;
+
 public static void main() {
 
     Game game = new Game();

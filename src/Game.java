@@ -1,3 +1,8 @@
+import Character.Character;
+import Character.Warrior;
+import Character.Wizard;
+
+
 public class Game {
     private final Menu menu;
 

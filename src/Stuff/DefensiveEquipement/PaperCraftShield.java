@@ -1,4 +1,6 @@
-package Stuff;
+package Stuff.DefensiveEquipement;
+
+import Stuff.DefensiveEquipment;
 
 public class PaperCraftShield extends DefensiveEquipment {
 

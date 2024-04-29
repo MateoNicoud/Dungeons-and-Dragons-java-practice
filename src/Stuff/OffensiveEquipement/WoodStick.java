@@ -1,4 +1,6 @@
-package Stuff;
+package Stuff.OffensiveEquipement;
+
+import Stuff.OffensiveEquipment;
 
 public class WoodStick extends OffensiveEquipment {
 

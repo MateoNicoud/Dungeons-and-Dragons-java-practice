@@ -1,7 +1,7 @@
 package Character;
 
-import Stuff.BottleOfWater;
-import Stuff.WoodStick;
+import Stuff.DefensiveEquipement.BottleOfWater;
+import Stuff.OffensiveEquipement.WoodStick;
 
 public class Wizard extends Character {
 

@@ -1,3 +1,5 @@
+import Character.Character;
+
 public class Box {
     private final int index;
     private Character character;

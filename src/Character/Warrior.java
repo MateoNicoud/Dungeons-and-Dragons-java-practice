@@ -1,7 +1,7 @@
 package Character;
 
-import Stuff.FoamSword;
-import Stuff.PaperCraftShield;
+import Stuff.OffensiveEquipement.FoamSword;
+import Stuff.DefensiveEquipement.PaperCraftShield;
 
 public class Warrior extends Character {
 
