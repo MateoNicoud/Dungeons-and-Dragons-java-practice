@@ -31,17 +31,13 @@ public class Game {
 
         boolean end = false;
         while (!end) {
+
             Board board = new Board();
             board.getBox(0).setCharacter(character);
             int boxIndex = board.getBoxOfCharacter(character);
             while (boxIndex < 63) {
                 System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
-                Dice dice = new Dice();
-                int throwedDice = dice.throwDice(1, 6, 2);
-                if (boxIndex + throwedDice > 63) {
-                    System.out.println(character.getName() + " a terminé le donjon");
-                    break;
-                }
+                int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
                 board.moveCharacter(character, throwedDice);
                 boxIndex = board.getBoxOfCharacter(character);
             }
@@ -63,8 +59,29 @@ public class Game {
                     default -> System.out.println("Réponse incorrect");
                 }
             }
+        }
 
+    }
+
+    private int getThrowedDiceSafely(int boardSize, int index) {
+        try {
+            return getThrowedDice(boardSize, index);
+        } catch (CharacterOutOfBounds error) {
+            System.out.println(error.getMessage());
+            return boardSize - index - 1;
         }
     }
 
+    private int getThrowedDice(int boardSize, int index) throws CharacterOutOfBounds {
+        Dice dice = new Dice();
+        int throwedDice = dice.throwDice(1, 6, 2);
+
+        if ((throwedDice + index) > boardSize ) {
+            throw new CharacterOutOfBounds("En dehors du plateau");
+        }
+
+        return throwedDice;
+    }
 }
+
+

@@ -34,7 +34,7 @@ public class Menu {
 
     }
 
-    public String getRestartResponse(){
+    public String getRestartResponse() {
         System.out.println("Veut tu recommencer avec ce personnage ? (oui/non)");
         return reader.nextLine();
     }
@@ -51,7 +51,7 @@ public class Menu {
     }
 
 
-    public String getCharacterJob(){
+    public String getCharacterJob() {
         System.out.println("Quel est votre job? (guerrier/magicien)");
         String job = reader.nextLine();
         if (job.equals("menu")) {
@@ -69,16 +69,31 @@ public class Menu {
     }
 
     //Choix d'équiper un objet dans la main secondaire
-    public boolean getSecondHand(){
-        return reader.nextLine().equals("oui");
+    public boolean getSecondHand() {
+        while (true) {
+            try {
+                String response = reader.nextLine();
+                if (response.equals("oui")) {
+                    return true;
+                } else if (response.equals("non")) {
+                    return false;
+                } else {
+                    throw new IllegalArgumentException("Réponse non valide");
+                }
+
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
     }
 
     //Lancement des jets de dés
-    public void getEnter(){
+    public void getEnter() {
         System.out.println("Appuie sur entrée pour lancer les dès");
         String enter = reader.nextLine();
         while (!enter.isEmpty()) {
-            if (enter.equals("menu")){
+            if (enter.equals("menu")) {
                 displayMenu();
             }
             System.out.println("Appuie sur entrée pour lancer les dès");
