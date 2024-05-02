@@ -37,12 +37,14 @@ public class Game  implements Dice {
             board.placeMysteryBox();
             board.placeEnnemies();
             int boxIndex = board.getBoxOfCharacter(character);
+
             while (boxIndex < 63) {
                 System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
                 int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
                 board.moveCharacter(character, throwedDice);
                 boxIndex = board.getBoxOfCharacter(character);
             }
+
             boolean goodResponse = false;
             while (!goodResponse) {
                 String restart = menu.getRestartResponse();
