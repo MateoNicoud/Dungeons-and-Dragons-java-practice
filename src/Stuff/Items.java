@@ -1,6 +1,6 @@
 package Stuff;
 
-public class Items {
+public abstract class Items {
     private String name;
     private String type;
 

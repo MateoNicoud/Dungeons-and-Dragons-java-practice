@@ -1,7 +1,18 @@
 package Stuff;
-public class Consumable {
-    private int Heal;
-    public void Consumable(){
-
+public abstract class Consumable extends Items{
+    public int getHeal() {
+        return heal;
     }
+
+    public void setHeal(int heal) {
+        this.heal = heal;
+    }
+
+    private int heal;
+
+    public Consumable(String type, String name, int heal) {
+        super(type,name);
+        this.heal = heal;
+    }
+
 }

@@ -2,43 +2,50 @@ import Character.Character;
 import Ennemies.*;
 import Ennemies.Sorcerer;
 import Stuff.Items;
+import java.util.ArrayList;
+
 
 public class Board {
-    private final Box[] boxes;
+    private ArrayList<Box> boxes;
 
     public Board() {
-        this.boxes = new Box[64];
+        boxes = new ArrayList<Box>();
         for (int i = 0; i < 64; i++) {
-            this.boxes[i] = new Box(i + 1);
+            Box box = new DefaultBox(i+1);
+            boxes.add(box);
         }
     }
 
+    public void addBox(Box box){
+        boxes.add(box);
+    }
+
     public Box getBox(int index) {
-        return this.boxes[index];
+        return this.boxes.get(index);
     }
 
     public int getBoardSize() {
-        return this.boxes.length;
+        return this.boxes.size();
     }
 
     public void placeMysteryBox() {
-        for (int i = 0; i < this.boxes.length * 0.05; i++) {
+        for (int i = 0; i < this.boxes.size() * 0.05; i++) {
             MysteryBox mysteryBox = new MysteryBox();
-            int random = (int) (Math.random() * boxes.length);
+            int random = (int) (Math.random() * boxes.size());
             boolean boxEmpty = false;
             while (!boxEmpty) {
-                if (this.boxes[random].getMysteryBox() == null && (this.boxes[random].getEnnemies() == null) && ((this.boxes[random].getCharacter() == null))) {
-                    this.boxes[random].setMysteryBox(mysteryBox);
+                if (this.boxes.get(random).getMysteryBox() == null && (this.boxes.get(random).getEnnemies() == null) && ((this.boxes.get(random).getCharacter() == null))) {
+                    this.boxes.get(random).setMysteryBox(mysteryBox);
                     boxEmpty = true;
                 } else {
-                    random = (int) (Math.random() * boxes.length);
+                    random = (int) (Math.random() * boxes.size());
                 }
             }
         }
     }
 
     public void placeEnnemies() {
-        for (int i = 0; i < this.boxes.length * 0.05; i++) {
+        for (int i = 0; i < this.boxes.size() * 0.05; i++) {
             int randomEnnemie = (int) (Math.random() * 3);
             Ennemies ennemie = null;
             if (randomEnnemie < 1) {
@@ -48,14 +55,14 @@ public class Board {
             } else {
                 ennemie = new Dragon();
             }
-            int random = (int) (Math.random() * boxes.length);
+            int random = (int) (Math.random() * boxes.size());
             boolean boxEmpty = false;
             while (!boxEmpty) {
-                if (this.boxes[random].getMysteryBox() == null && (this.boxes[random].getEnnemies() == null) && ((this.boxes[random].getCharacter() == null))) {
-                    this.boxes[random].setEnnemies(ennemie);
+                if (this.boxes.get(random).getMysteryBox() == null && (this.boxes.get(random).getEnnemies() == null) && ((this.boxes.get(random).getCharacter() == null))) {
+                    this.boxes.get(random).setEnnemies(ennemie);
                     boxEmpty = true;
                 } else {
-                    random = (int) (Math.random() * boxes.length);
+                    random = (int) (Math.random() * boxes.size());
                 }
             }
 
@@ -65,8 +72,8 @@ public class Board {
 
 
 public int getBoxOfCharacter(Character character) {
-    for (int i = 0; i < this.boxes.length; i++) {
-        if (this.boxes[i].getCharacter() == character) {
+    for (int i = 0; i < this.boxes.size(); i++) {
+        if (this.boxes.get(i).getCharacter() == character) {
             return i;
         }
     }
@@ -78,19 +85,19 @@ public void moveCharacter(Character character, int steps) {
     if (currentBoxIndex != -1) {
         int newBoxIndex = currentBoxIndex + steps;
         while (currentBoxIndex < newBoxIndex) {
-            if (currentBoxIndex <= this.boxes.length) {
-                boxes[currentBoxIndex].setCharacter(null);
+            if (currentBoxIndex <= this.boxes.size()) {
+                boxes.get(currentBoxIndex).setCharacter(null);
                 currentBoxIndex++;
-                if (currentBoxIndex < this.boxes.length) {
-                    boxes[currentBoxIndex].setCharacter(character);
-                    if (boxes[currentBoxIndex].getMysteryBox() != null) {
-                        Items randomItem = boxes[currentBoxIndex].getMysteryBox().getRandomItem();
+                if (currentBoxIndex < this.boxes.size()) {
+                    boxes.get(currentBoxIndex).setCharacter(character);
+                    if (boxes.get(currentBoxIndex).getMysteryBox() != null) {
+                        Items randomItem = boxes.get(currentBoxIndex).getMysteryBox().getRandomItem();
                         character.addToInventory(randomItem);
                         System.out.println("Il y a une boite mystère contenant :" + randomItem);
                         character.displayInventory();
                     }
-                    if (boxes[currentBoxIndex].getEnnemies() != null) {
-                        System.out.println("Il y a un " + boxes[currentBoxIndex].getEnnemies().getName() + " Sur cette case");
+                    if (boxes.get(currentBoxIndex).getEnnemies() != null) {
+                        System.out.println("Il y a un " + boxes.get(currentBoxIndex).getEnnemies().getName() + " Sur cette case");
                     }
                     System.out.println("avancement :" + (currentBoxIndex + 1));
                 }

@@ -1,6 +1,7 @@
 
-public class Dice {
-    public int throwDice(int min, int max, int quantity) {
+public interface Dice {
+
+    public default int throwDice(int min, int max, int quantity) {
         Menu menu =new Menu();
         int[] dice = new int[quantity];
         int total = 0;

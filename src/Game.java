@@ -3,7 +3,7 @@ import Character.Warrior;
 import Character.Wizard;
 
 
-public class Game {
+public class Game  implements Dice {
     private final Menu menu;
 
     public Game() {
@@ -37,12 +37,14 @@ public class Game {
             board.placeMysteryBox();
             board.placeEnnemies();
             int boxIndex = board.getBoxOfCharacter(character);
+
             while (boxIndex < 63) {
                 System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
                 int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
                 board.moveCharacter(character, throwedDice);
                 boxIndex = board.getBoxOfCharacter(character);
             }
+
             boolean goodResponse = false;
             while (!goodResponse) {
                 String restart = menu.getRestartResponse();
@@ -75,8 +77,7 @@ public class Game {
     }
 
     private int getThrowedDice(int boardSize, int index) throws CharacterOutOfBounds {
-        Dice dice = new Dice();
-        int throwedDice = dice.throwDice(1, 6, 2);
+        int throwedDice = throwDice(1, 6, 2);
 
         if ((throwedDice + index) > boardSize ) {
             throw new CharacterOutOfBounds("En dehors du plateau");
