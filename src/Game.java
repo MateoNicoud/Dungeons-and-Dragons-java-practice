@@ -34,6 +34,8 @@ public class Game {
 
             Board board = new Board();
             board.getBox(0).setCharacter(character);
+            board.placeMysteryBox();
+            board.placeEnnemies();
             int boxIndex = board.getBoxOfCharacter(character);
             while (boxIndex < 63) {
                 System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
