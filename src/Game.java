@@ -3,7 +3,7 @@ import Character.Warrior;
 import Character.Wizard;
 
 
-public class Game {
+public class Game  implements Dice {
     private final Menu menu;
 
     public Game() {
@@ -75,8 +75,7 @@ public class Game {
     }
 
     private int getThrowedDice(int boardSize, int index) throws CharacterOutOfBounds {
-        Dice dice = new Dice();
-        int throwedDice = dice.throwDice(1, 6, 2);
+        int throwedDice = throwDice(1, 6, 2);
 
         if ((throwedDice + index) > boardSize ) {
             throw new CharacterOutOfBounds("En dehors du plateau");
