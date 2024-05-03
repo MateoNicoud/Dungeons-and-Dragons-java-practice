@@ -12,7 +12,7 @@ public abstract class OffensiveEquipment extends Items {
     private int attackPower;
 
     public OffensiveEquipment(String type, String name, int attackPower) {
-        super(type,name);
+        super(type,name,attackPower);
         this.attackPower = attackPower;
     }
 

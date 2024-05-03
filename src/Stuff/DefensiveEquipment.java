@@ -11,7 +11,7 @@ public abstract class DefensiveEquipment extends Items {
 
     private int defensePower;
     public DefensiveEquipment(String type, String name, int defensePower) {
-        super(type,name);
+        super(type,name,defensePower);
         this.defensePower = defensePower;
     }
 

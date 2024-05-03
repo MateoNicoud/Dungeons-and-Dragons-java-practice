@@ -3,10 +3,12 @@ package Stuff;
 public abstract class Items {
     private String name;
     private String type;
+    private final int power;
 
-    public Items(String type, String name) {
+    public Items(String type, String name,int power) {
         this.name = name;
         this.type = type;
+        this.power = power;
     }
 
     public String getName() {
@@ -29,5 +31,9 @@ public abstract class Items {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getPower() {
+        return this.power;
     }
 }

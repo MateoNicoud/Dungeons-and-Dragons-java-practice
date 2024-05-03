@@ -20,4 +20,7 @@ public class MysteryBox {
         int randomNumber = (int) (Math.random()*max);
         return items.get(randomNumber);
     }
+    public Items getItem(Items item){
+        return items.get(items.indexOf(item));
+    }
 }
