@@ -66,7 +66,7 @@ private void placeItemInRandomBox(MysteryBox mysteryBox) {
             mysteryBox.items.add(new WoodStick());
             placeItemInRandomBox(mysteryBox);
         }
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 5; i++) {
             MysteryBox mysteryBox = new MysteryBox();
             mysteryBox.items.clear();
             mysteryBox.items.add(new EldritchStaff());
@@ -142,11 +142,11 @@ private void placeItemInRandomBox(MysteryBox mysteryBox) {
         int currentBoxIndex = getBoxOfCharacter(character);
         if (currentBoxIndex != -1) {
             int newBoxIndex = currentBoxIndex + steps;
-            if (newBoxIndex == this.boxes.size() - 1) {
-                System.out.println(character.getName() + " a terminé le donjon");
-            }
             if (newBoxIndex >=boxes.size()){
                 newBoxIndex=boxes.size()-1;
+            }
+            if (newBoxIndex == this.boxes.size() - 1) {
+                System.out.println(character.getName() + " a terminé le donjon");
             }
             if (currentBoxIndex <= this.boxes.size()) {
                 boxes.get(currentBoxIndex).setCharacter(null);
@@ -157,10 +157,13 @@ private void placeItemInRandomBox(MysteryBox mysteryBox) {
                     System.out.println("Il y a une boite mystère contenant :" + Item);
                     if(Item.getType().equals("Épée") && character instanceof Warrior && character.getOffensiveEquipment().getAttackPower()<Item.getPower()){
                      character.setOffensiveEquipment((OffensiveEquipment) Item);
+                     character.setAttackPower(character.getBaseAttackPower()+character.getOffensiveEquipment().getAttackPower());
                      System.out.println("Vous aves maintenat "+Item+" équipée");
                     }
                     if(Item.getType().equals("Catalyseur") && character instanceof Wizard && character.getOffensiveEquipment().getAttackPower()<Item.getPower()){
                         character.setOffensiveEquipment((OffensiveEquipment) Item);
+                        character.setAttackPower(character.getBaseAttackPower()+character.getOffensiveEquipment().getAttackPower());
+
                         System.out.println("Vous aves maintenat "+Item+" équipée");
                     }
                     if (Item.getType().equals("Potion")){
@@ -170,7 +173,50 @@ private void placeItemInRandomBox(MysteryBox mysteryBox) {
 //                    character.displayInventory();
                 }
                 if (boxes.get(currentBoxIndex).getEnnemies() != null) {
+                    Menu menu = new Menu();
                     System.out.println("Il y a un " + boxes.get(currentBoxIndex).getEnnemies().getName() + " Sur cette case");
+                    boolean userChoice = menu.fightOrFlee();
+                    if (!userChoice){
+                        System.out.println("Le "+boxes.get(currentBoxIndex).getEnnemies().getName()+" vas vous attaquer pendant votre fuite");
+                        int damage = boxes.get(currentBoxIndex).getEnnemies().getAttackPower() - character.getDefensePower();
+                        if (damage < 0) {
+                            damage = 0;
+                        }
+                        character.setHealth(character.getHealth() - damage);
+                        System.out.println("il vous reste "+character.getHealth()+" HP");
+                        if (character.getHealth() <=0){
+                            System.out.println("Il vous as tuer, Game Over");
+                            System.exit(0);
+                        }else {
+                            System.out.println("Vous avez fuis comme un lâche");
+                            int random = (int)(Math.random()*6);
+                            System.out.println("Vous reculer de "+random+" case(s)");
+                            newBoxIndex=currentBoxIndex-(random);
+                            boxes.get(currentBoxIndex).setCharacter(null);
+                            boxes.get(newBoxIndex).setCharacter(character);
+                        }
+                    } else {
+                        while (character.getHealth() > 0 && boxes.get(currentBoxIndex).getEnnemies().getHealth() >0){
+                            System.out.println(character.getName()+" attaque et inflige "+character.getAttackPower()+ "de dégats à "
+                                    +boxes.get(currentBoxIndex).getEnnemies().getName() );
+                            boxes.get(currentBoxIndex).getEnnemies().setHealth(boxes.get(currentBoxIndex).getEnnemies().getHealth() - character.getAttackPower());
+                            if (boxes.get(currentBoxIndex).getEnnemies().getHealth() <= 0){
+                                System.out.println("Le "+boxes.get(currentBoxIndex).getEnnemies().getName()+" est mort");
+                            } else {
+                                System.out.println("Le "+boxes.get(currentBoxIndex).getEnnemies().getName()+" vous attaque");
+                                int damage = boxes.get(currentBoxIndex).getEnnemies().getAttackPower() - character.getDefensePower();
+                                if (damage < 0) {
+                                    damage = 0;
+                                }
+                                character.setHealth(character.getHealth() - damage);                                System.out.println("il vous reste "+character.getHealth()+" HP");
+                                if (character.getHealth() <=0) {
+                                    System.out.println("Il vous as tuer, Game Over");
+                                    System.exit(0);
+                                }
+
+                            }
+                        }
+                    }
                 }
                 if (this.boxes.size() < currentBoxIndex) {
                     System.out.println("avancement :" + (currentBoxIndex + 1));

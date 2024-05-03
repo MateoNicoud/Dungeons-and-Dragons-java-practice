@@ -100,4 +100,18 @@ public class Menu {
             enter = reader.nextLine();
         }
     }
+
+    public boolean fightOrFlee(){
+        String userChoice = "";
+        while ((!userChoice.equals("oui"))&&!(userChoice.equals("non"))){
+            System.out.println("Veut tu te BATTRE ou FUIR ? (oui/non)");
+            userChoice = reader.nextLine();
+        }
+        if (userChoice.equals("oui")){
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

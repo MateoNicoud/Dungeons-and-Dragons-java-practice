@@ -18,10 +18,18 @@ public abstract class Character {
     private Stuff.OffensiveEquipment OffensiveEquipment;
     private Stuff.DefensiveEquipment DefensiveEquipment;
 
-    public Character(String name, boolean secondaryHand) {
+    public int getBaseAttackPower() {
+        return baseAttackPower;
+    }
+
+
+    private final int baseAttackPower;
+
+    public Character(String name, boolean secondaryHand,int baseAttackPower) {
         this.name = name;
         this.secondaryHand = secondaryHand;
         this.inventory = new Inventory();
+        this.baseAttackPower=baseAttackPower;
     }
     public void addToInventory(Stuff.Items item){
         this.inventory.addItems(item);

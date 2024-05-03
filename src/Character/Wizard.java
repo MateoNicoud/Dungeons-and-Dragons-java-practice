@@ -6,9 +6,9 @@ import Stuff.OffensiveEquipement.WoodStick;
 public class Wizard extends Character {
 
     public Wizard(String name, String job, boolean secondaryHand) {
-        super(name, secondaryHand);
-        int baseHealth = 6;
         int baseAttackPower = 15;
+        super(name, secondaryHand,baseAttackPower);
+        int baseHealth = 600;
         int baseDefense = 0;
         this.setJob(job);
         this.setOffensiveEquipment(new WoodStick());
