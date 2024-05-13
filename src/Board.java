@@ -149,23 +149,20 @@ public class Board {
             if (newBoxIndex == this.boxes.size() - 1) {
                 System.out.println(character.getName() + " a terminé le donjon");
             }
-        //---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
             if (currentBoxIndex <= this.boxes.size()) {
                 boxes.get(currentBoxIndex).setCharacter(null);
                 boxes.get(newBoxIndex).setCharacter(character);
 
-            //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 if (boxes.get(currentBoxIndex).getMysteryBox() != null) {
                     handleMysteryBox(character, boxes.get(currentBoxIndex).getMysteryBox().getRandomItem());
                 }
 
-            //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 if (boxes.get(currentBoxIndex).getEnnemies() != null) {
                     handleEnnemyEncounter(character, boxes.get(currentBoxIndex).getEnnemies(), currentBoxIndex, newBoxIndex);
                 }
-            //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 if (this.boxes.size() < currentBoxIndex) {
                     System.out.println("avancement :" + (currentBoxIndex + 1));
@@ -181,7 +178,6 @@ public class Board {
         character.addToInventory(Item);
         System.out.println("Il y a une boite mystère contenant :" + Item);
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         if (Item.getType().equals("Épée") && character instanceof Warrior && character.getOffensiveEquipment().getAttackPower() < Item.getPower()) {
             character.setOffensiveEquipment((OffensiveEquipment) Item);
@@ -189,7 +185,6 @@ public class Board {
             System.out.println("Vous aves maintenat " + Item + " équipée");
         }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         if (Item.getType().equals("Catalyseur") && character instanceof Wizard && character.getOffensiveEquipment().getAttackPower() < Item.getPower()) {
             character.setOffensiveEquipment((OffensiveEquipment) Item);
@@ -198,7 +193,6 @@ public class Board {
             System.out.println("Vous aves maintenat " + Item + " équipée");
         }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         if (Item.getType().equals("Potion")) {
             character.setHealth(character.getHealth() + Item.getPower());

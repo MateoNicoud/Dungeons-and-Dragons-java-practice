@@ -49,11 +49,9 @@ public class Game {
         board.placeEnnemies();
         int boxIndex = board.getBoxOfCharacter(character);
 
+        //Lance des tours jusqu'à avoir fini le plateau.
         while (boxIndex < 63) {
-            System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
-            int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
-            board.moveCharacter(character, throwedDice);
-            boxIndex = board.getBoxOfCharacter(character);
+           boxIndex = playTurn(character,board, boxIndex);
         }
 
         boolean goodResponse = false;
@@ -95,6 +93,16 @@ public class Game {
         }
 
         return thrownDice;
+    }
+    private int playTurn(Character character, Board board, int boxIndex){
+        System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
+        int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
+        board.moveCharacter(character, throwedDice);
+        if (boxIndex<=63) {
+            return boxIndex = board.getBoxOfCharacter(character);
+        }else {
+            return 63;
+        }
     }
 }
 
