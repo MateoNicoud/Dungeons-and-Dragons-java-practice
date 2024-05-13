@@ -3,8 +3,19 @@ import Character.Warrior;
 import Character.Wizard;
 
 
-public class Game{
+public class Game {
     private final Menu menu;
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
+    private String gameState;
+
 
     public Game() {
         this.menu = new Menu();
@@ -23,49 +34,48 @@ public class Game{
         } else {
             newCharacter = new Wizard(name, job, hasDefensiveEquipment);
         }
+        newCharacter.displayCharacter();
+        newCharacter.displayInventory();
 
         return newCharacter;
     }
 
     public void Play(Character character) {
 
-        boolean end = false;
-        while (!end) {
 
-            Board board = new Board();
-            board.getBox(0).setCharacter(character);
-            board.placeMysteryBox();
-            board.placeEnnemies();
-            int boxIndex = board.getBoxOfCharacter(character);
+        Board board = new Board();
+        board.getBox(0).setCharacter(character);
+        board.placeMysteryBox();
+        board.placeEnnemies();
+        int boxIndex = board.getBoxOfCharacter(character);
 
-            while (boxIndex < 63) {
-                System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
-                int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
-                board.moveCharacter(character, throwedDice);
-                boxIndex = board.getBoxOfCharacter(character);
-            }
-
-            boolean goodResponse = false;
-            while (!goodResponse) {
-                String restart = menu.getRestartResponse();
-                switch (restart) {
-                    case "non" -> {
-
-                        end = true;
-                        System.out.println("Cya");
-                        goodResponse = true;
-                    }
-                    case "oui" -> {
-                        System.out.println("Redémarrage de la partie");
-                        goodResponse = true;
-                    }
-                    case "menu" -> menu.displayMenu();
-                    default -> System.out.println("Réponse incorrect");
-                }
-            }
+        while (boxIndex < 63) {
+            System.out.println(character.getName() + " est à la case " + (boxIndex + 1));
+            int throwedDice = getThrowedDiceSafely(board.getBoardSize(), boxIndex);
+            board.moveCharacter(character, throwedDice);
+            boxIndex = board.getBoxOfCharacter(character);
         }
 
+        boolean goodResponse = false;
+        while (!goodResponse) {
+            String restart = menu.getRestartResponse();
+            switch (restart) {
+                case "non" -> {
+
+                    gameState = "FINISHED";
+                    System.out.println("Cya");
+                    goodResponse = true;
+                }
+                case "oui" -> {
+                    System.out.println("Redémarrage de la partie");
+                    goodResponse = true;
+                }
+                case "menu" -> menu.displayMenu();
+                default -> System.out.println("Réponse incorrect");
+            }
+        }
     }
+
 
     private int getThrowedDiceSafely(int boardSize, int index) {
         try {
@@ -80,12 +90,11 @@ public class Game{
         Dice dice = new Dice1();
         int thrownDice = dice.throwDice(1, 6, 2);
 
-        if ((thrownDice + index) > boardSize ) {
+        if ((thrownDice + index) > boardSize) {
             throw new CharacterOutOfBounds("En dehors du plateau");
         }
 
         return thrownDice;
     }
 }
-
 

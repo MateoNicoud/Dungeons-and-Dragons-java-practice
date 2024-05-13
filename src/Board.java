@@ -238,8 +238,12 @@ public class Board {
                 System.out.println(character.getName() + " attaque et inflige " + character.getAttackPower() + "de dégats à "
                         + ennemies.getName());
                 ennemies.setHealth(ennemies.getHealth() - character.getAttackPower());
+                System.out.println(ennemies.getName() + " attaque et inflige " + ennemies.getAttackPower() + "de dégats à "
+                        + character.getName());
+                character.setHealth(character.getHealth() - ennemies.getAttackPower());
                 if (ennemies.getHealth() <= 0) {
                     System.out.println("Le " + ennemies.getName() + " est mort");
+                    System.out.println("il vous reste "+character.getHealth()+" points de vie");
                     boxes.get(currentBoxIndex).setEnnemies(null);
                 } else {
 
