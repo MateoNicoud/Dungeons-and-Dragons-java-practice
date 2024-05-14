@@ -10,6 +10,7 @@ public abstract class Ennemies implements Box {
     private final String name;
 
     private int health;
+    private Hero character;
 
     public Ennemies(String name, int attackPower, int health){
         this.name=name;
@@ -44,5 +45,13 @@ public abstract class Ennemies implements Box {
         Combat combat = new Combat(this,character,board);
 
         character.setHealth(character.getHealth() - getAttackPower());
+    }
+    @Override
+    public Hero getCharacter() {
+        return this.character;
+    }
+
+    @Override public void setCharacter(Hero character){
+        this.character = character;
     }
 }

@@ -7,8 +7,8 @@ public class Warrior extends Hero {
 
 
     public Warrior(String name, String job, boolean secondaryHand) {
+        super(name, secondaryHand,10);
         int baseAttackPower = 10;
-        super(name, secondaryHand,baseAttackPower);
         int baseHealth = 1000;
         int baseDefensePower = 10;
         this.setJob(job);

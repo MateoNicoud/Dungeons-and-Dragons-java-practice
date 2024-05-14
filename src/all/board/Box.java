@@ -14,4 +14,6 @@ public interface Box {
 //    String toString();
 
     void interaction(Hero character, Board board);
+    Hero getCharacter();
+    void setCharacter(Hero character);
 }

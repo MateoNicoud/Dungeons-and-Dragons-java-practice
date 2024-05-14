@@ -53,6 +53,7 @@ public class Game {
 
 
         Board board = new Board();
+        board.placeCharacterAtStart(character);
 
 
 //        board.getBox(0).setCharacter(character);

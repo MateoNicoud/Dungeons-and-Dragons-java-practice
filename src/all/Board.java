@@ -168,17 +168,24 @@ public class Board {
 
 
     public int getBoxOfCharacter(Hero character) {
-            if (this.boxes.get(i).getCharacter() == character) {
+        for (int i = 0; i < this.boxes.size(); i++) {
+            if (this.boxes.get(i).getCharacter() != null && this.boxes.get(i).getCharacter().equals(character)) {
                 return i;
             }
-
+        }
         return -1;
+    }
+
+    public void placeCharacterAtStart(Hero character) {
+        if (boxes.size() > 0) {
+            boxes.get(0).setCharacter(character);
+        }
     }
 
     public void moveCharacter(Hero character, int steps) {
         currentBoxIndex = getBoxOfCharacter(character);
         if (currentBoxIndex != -1) {
-             newBoxIndex = currentBoxIndex + steps;
+            newBoxIndex = currentBoxIndex + steps;
             if (newBoxIndex >= boxes.size()) {
                 newBoxIndex = boxes.size() - 1;
             }
@@ -186,31 +193,15 @@ public class Board {
                 System.out.println(character.getName() + " a terminé le donjon");
             }
 
-            if (currentBoxIndex <= this.boxes.size()) {
-
+            if (currentBoxIndex < this.boxes.size()) {
                 Box box = boxes.get(newBoxIndex);
-                box.interaction(character, board);
-//
-//                boxes.get(currentBoxIndex).setCharacter(null);
-//                boxes.get(newBoxIndex).setCharacter(character);
-//
-//
-//                if (boxes.get(currentBoxIndex).getMysteryBox() != null) {
-//                    handleMysteryBox(character, boxes.get(currentBoxIndex).getMysteryBox().getRandomItem());
-//                }
-//
-//
-//                if (boxes.get(currentBoxIndex).getEnnemies() != null) {
-//                    handleEnnemyEncounter(character, boxes.get(currentBoxIndex).getEnnemies(), currentBoxIndex, newBoxIndex);
-//                }
-//
-//                if (this.boxes.size() < currentBoxIndex) {
-//                    System.out.println("avancement :" + (currentBoxIndex + 1));
-//                }
+                box.interaction(character, this);
+
+                // Assuming Box interface or its implementations have setCharacter method
+                boxes.get(currentBoxIndex).setCharacter(null);
+                boxes.get(newBoxIndex).setCharacter(character);
             }
-
         }
-
     }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 

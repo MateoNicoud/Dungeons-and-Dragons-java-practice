@@ -11,6 +11,7 @@ import all.hero.Hero;
 import java.util.*;
 
 public class MysteryBox implements Box {
+    private Hero character;
     public List<Items> items;
     public MysteryBox(){
         items=new ArrayList<>();
@@ -25,6 +26,7 @@ public class MysteryBox implements Box {
         int randomNumber = (int) (Math.random()*max);
         return items.get(randomNumber);
     }
+
     public Items getItem(Items item){
         return items.get(items.indexOf(item));
     }
@@ -33,5 +35,14 @@ public class MysteryBox implements Box {
     public void interaction(Hero character, Board board) {
         Items randomItem = getRandomItem();
         randomItem.equipHero(character);
+    }
+
+    @Override
+    public Hero getCharacter() {
+        return this.character;
+    }
+
+    @Override public void setCharacter(Hero character){
+        this.character = character;
     }
 }
