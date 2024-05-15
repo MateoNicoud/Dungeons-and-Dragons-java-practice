@@ -2,6 +2,9 @@ package all.hero;
 
 import java.sql.*;
 
+import all.Board;
+import all.Ennemies.Ennemies;
+import all.MysteryBox;
 import all.Stuff.DefensiveEquipment;
 import all.Stuff.Items;
 import all.Stuff.OffensiveEquipment;
@@ -69,8 +72,8 @@ public abstract class Hero {
     }
 
 
-    public void createHero() {
-        String sql = "INSERT INTO dd (id, job, name, healthPoint, attackPower, defensePower, offensiveEquipement, DefensiveEquipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public void createHero(Board board, Hero character) {
+        String sql = "INSERT INTO hero (id, name, job, healthPoint, attackPower, defensePower, position) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, this.id);
@@ -79,20 +82,16 @@ public abstract class Hero {
             statement.setInt(4, this.health);
             statement.setInt(5, this.attackPower);
             statement.setInt(6, this.defensePower);
-            statement.setString(7, this.OffensiveEquipment != null ? this.OffensiveEquipment.toString() : null);
-            statement.setString(8, this.DefensiveEquipment != null ? this.DefensiveEquipment.toString() : null);
-
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("An hero was created successfully!");
-            }
+            int characterPosition = board.getBoxOfCharacter(character);
+            statement.setInt(4, characterPosition);
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void getHeroes() {
-        String sql = "SELECT * FROM dd";
+        String sql = "SELECT id,job,name FROM hero";
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery(); // remove sql from here
@@ -106,37 +105,154 @@ public abstract class Hero {
         }
     }
 
-    public void editHero() {
-        String sql = "UPDATE dd SET  healthPoint = ?, attackPower = ?, defensePower = ?, offensiveEquipement = ?, DefensiveEquipment = ? WHERE id = ?";
+    public void editHero(Board board, Hero character) {
+        String sql = "UPDATE hero SET  healthPoint = ?, attackPower = ?, defensePower = ?, position = ? WHERE id = ?";
 
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, this.health);
-            statement.setInt(2, this.attackPower);
-            statement.setInt(3, this.defensePower);
-            statement.setString(4, this.OffensiveEquipment != null ? this.OffensiveEquipment.toString() : null);
-            statement.setString(5, this.DefensiveEquipment != null ? this.DefensiveEquipment.toString() : null);
-            statement.setInt(6, this.id);
+            statement.setInt(2, (this.attackPower+this.OffensiveEquipment.getAttackPower()));
+            statement.setInt(3, (this.defensePower+this.DefensiveEquipment.getDefensePower()));
+            int characterPosition = board.getBoxOfCharacter(character);
+            statement.setInt(4, characterPosition);
 
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("An existing hero was updated successfully!");
-            }
+            statement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void deleteHero() {
-        String sql = "DELETE FROM dd";
+        String sql = "DELETE FROM hero";
 
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            int rowsDeleted = statement.executeUpdate();
-            if (rowsDeleted > 0) {
-                System.out.println("A hero was deleted successfully!");
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void getDefensiveEquipments() {
+        String sql = "SELECT id,name,type,defensePower FROM defensiveEquipement";
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                System.out.println("ID " + resultSet.getInt("id"));
+                System.out.println("Name " + resultSet.getString("name"));
+                System.out.println("Type " + resultSet.getString("type"));
+                System.out.println("Defense Power " + resultSet.getInt("defensePower"));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editDefensiveEquipment(DefensiveEquipment defensiveEquipment) {
+        String sql = "UPDATE defensiveEquipement SET name = ?, type = ?, defensePower = ? WHERE Hero_id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, defensiveEquipment.getName());
+            statement.setString(2, defensiveEquipment.getType());
+            statement.setInt(3, defensiveEquipment.getDefensePower());
+            statement.setInt(4, this.id);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteDefensiveEquipment(int id) {
+        String sql = "DELETE FROM defensiveEquipement WHERE id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getOffensiveEquipments() {
+        String sql = "SELECT id,name,type,defensePower FROM offensiveEquipement";
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                System.out.println("ID " + resultSet.getInt("id"));
+                System.out.println("Name " + resultSet.getString("name"));
+                System.out.println("Type " + resultSet.getString("type"));
+                System.out.println("Attack Power " + resultSet.getInt("attackPower"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editOffensiveEquipment(OffensiveEquipment offensiveEquipment) {
+        String sql = "UPDATE offensiveEquipement SET name = ?, type = ?, attackPower = ? WHERE Hero_id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, offensiveEquipment.getName());
+            statement.setString(2, offensiveEquipment.getType());
+            statement.setInt(3, offensiveEquipment.getAttackPower());
+            statement.setInt(4, this.id);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteDOffensiveEquipment() {
+        String sql = "DELETE FROM offensiveEquipement WHERE Hero_id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, this.id);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void editBoard(Board board) {
+        String sql = "UPDATE board SET id = ? WHERE Hero_id=? && case_id=case.id";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, System.identityHashCode(board));
+            statement.setInt(2, this.id);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createBox(Board board, Hero character, int id) {
+        String sql = "INSERT INTO case (id, content) VALUES (?, ?)";
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            if (board.getBox(id) instanceof Ennemies) {
+                statement.setString(2, "Monster");
+            } else if (board.getBox(id) instanceof MysteryBox) {
+                statement.setString(2, board.getBox(id).toString());
+            }
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

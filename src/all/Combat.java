@@ -55,9 +55,15 @@ public class Combat {
         } else {
             System.out.println("Vous avez fuis comme un lâche");
             int random = (int) (Math.random() * 6);
-            System.out.println("Vous reculer de " + random + " case(s)");
-            int newBoxIndex = board.getCurrentBoxIndex() - (random);
-            board.setNewBoxIndex(newBoxIndex);
+            if( (board.getCurrentBoxIndex() - (random))>1) {
+                System.out.println("Vous reculer de " + random + " case(s)");
+                int newBoxIndex = board.getCurrentBoxIndex() - (random);
+                board.setNewBoxIndex(newBoxIndex);
+            } else {
+                System.out.println("Vous reculer de " + (board.getCurrentBoxIndex()-1) + " case(s)");
+                board.setNewBoxIndex(1);
+
+            }
 //                boxes.get(currentBoxIndex).setCharacter(null);
 //                boxes.get(newBoxIndex).setCharacter(character);
         }

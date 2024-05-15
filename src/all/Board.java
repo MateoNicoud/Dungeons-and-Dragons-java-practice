@@ -42,17 +42,12 @@ public class Board {
 
     private int currentBoxIndex;
 
-    private final ArrayList<Box> boxes;
+    private ArrayList<Box> boxes;
 
     public Board() {
-        boxes = new ArrayList<Box>();
-        for (int i = 0; i < 64; i++) {
-            Box box = new EmptyBox();
-            boxes.add(box);
-        }
-
-        placeMysteryBox();
+        boardInit();
         placeEnnemies();
+        placeMysteryBox();
     }
 
     public void addBox(Box box) {
@@ -67,17 +62,25 @@ public class Board {
         return this.boxes.size();
     }
 
+    private void boardInit(){
+        boxes = new ArrayList<Box>();
+        for (int i = 0; i < 64; i++) {
+            Box box = new EmptyBox();
+            boxes.add(box);
+        }
+    }
     private void placeItemInRandomBox(MysteryBox mysteryBox) {
-        int random = (int) (Math.random() * boxes.size());
+        boolean boxEmpty = false;
+        int random = -1;
+
+        while (!boxEmpty) {
+            random = (int) (Math.random() * boxes.size());
+            if (this.boxes.get(random) instanceof EmptyBox) {
+                boxEmpty = true;
+            }
+        }
+
         this.boxes.set(random, mysteryBox);
-//        boolean boxEmpty = false;
-//        while (!boxEmpty) {
-//            if (this.boxes.get(random).getMysteryBox() == null && (this.boxes.get(random).getEnnemies() == null) && ((this.boxes.get(random).getCharacter() == null))) {
-//                boxEmpty = true;
-//            } else {
-//                random = (int) (Math.random() * boxes.size()-1);
-//            }
-//        }
     }
 
     public void placeMysteryBox() {
