@@ -1,5 +1,7 @@
 package all.hero;
 
+import java.sql.*;
+
 import all.Stuff.DefensiveEquipment;
 import all.Stuff.Items;
 import all.Stuff.OffensiveEquipment;
@@ -10,6 +12,17 @@ public abstract class Hero {
     private final String name;
     private String job;
     private final Inventory inventory;
+
+    private int id = System.identityHashCode(this);
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 
 
     private final boolean secondaryHand;
@@ -30,12 +43,14 @@ public abstract class Hero {
         this.name = name;
         this.secondaryHand = secondaryHand;
         this.inventory = new Inventory();
-        this.baseAttackPower=baseAttackPower;
+        this.baseAttackPower = baseAttackPower;
     }
-    public void addToInventory(Items item){
+
+    public void addToInventory(Items item) {
         this.inventory.addItems(item);
     }
-    public void displayInventory(){
+
+    public void displayInventory() {
         this.inventory.displayInventory();
     }
 
@@ -50,6 +65,80 @@ public abstract class Hero {
         System.out.println("Equipement offensif: " + OffensiveEquipment);
         if (DefensiveEquipment != null) {
             System.out.println("Equipement défensif: " + DefensiveEquipment);
+        }
+    }
+
+
+    public void createHero() {
+        String sql = "INSERT INTO dd (id, job, name, healthPoint, attackPower, defensePower, offensiveEquipement, DefensiveEquipment) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, this.id);
+            statement.setString(2, this.job);
+            statement.setString(3, this.name);
+            statement.setInt(4, this.health);
+            statement.setInt(5, this.attackPower);
+            statement.setInt(6, this.defensePower);
+            statement.setString(7, this.OffensiveEquipment != null ? this.OffensiveEquipment.toString() : null);
+            statement.setString(8, this.DefensiveEquipment != null ? this.DefensiveEquipment.toString() : null);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("An hero was created successfully!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getHeroes() {
+        String sql = "SELECT * FROM dd";
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery(); // remove sql from here
+            while (resultSet.next()) {
+                System.out.println("ID " + resultSet.getInt("id"));
+                System.out.println("Job " + resultSet.getString("job"));
+                System.out.println("Name " + resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editHero() {
+        String sql = "UPDATE dd SET  healthPoint = ?, attackPower = ?, defensePower = ?, offensiveEquipement = ?, DefensiveEquipment = ? WHERE id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, this.health);
+            statement.setInt(2, this.attackPower);
+            statement.setInt(3, this.defensePower);
+            statement.setString(4, this.OffensiveEquipment != null ? this.OffensiveEquipment.toString() : null);
+            statement.setString(5, this.DefensiveEquipment != null ? this.DefensiveEquipment.toString() : null);
+            statement.setInt(6, this.id);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("An existing hero was updated successfully!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteHero() {
+        String sql = "DELETE FROM dd";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("A hero was deleted successfully!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

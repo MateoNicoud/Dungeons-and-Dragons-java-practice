@@ -197,7 +197,6 @@ public class Board {
                 Box box = boxes.get(newBoxIndex);
                 box.interaction(character, this);
 
-                // Assuming Box interface or its implementations have setCharacter method
                 boxes.get(currentBoxIndex).setCharacter(null);
                 boxes.get(newBoxIndex).setCharacter(character);
             }
@@ -205,32 +204,32 @@ public class Board {
     }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    private void handleMysteryBox(Hero character, Items Item) {
-        character.addToInventory(Item);
-        System.out.println("Il y a une boite mystère contenant :" + Item);
-
-
-        if (Item.getType().equals("Épée") && character instanceof Warrior && character.getOffensiveEquipment().getAttackPower() < Item.getPower()) {
-            character.setOffensiveEquipment((OffensiveEquipment) Item);
-            character.setAttackPower(character.getBaseAttackPower() + character.getOffensiveEquipment().getAttackPower());
-            System.out.println("Vous aves maintenat " + Item + " équipée");
-        }
-
-
-        if (Item.getType().equals("Catalyseur") && character instanceof Wizard && character.getOffensiveEquipment().getAttackPower() < Item.getPower()) {
-            character.setOffensiveEquipment((OffensiveEquipment) Item);
-            character.setAttackPower(character.getBaseAttackPower() + character.getOffensiveEquipment().getAttackPower());
-
-            System.out.println("Vous aves maintenat " + Item + " équipée");
-        }
-
-
-        if (Item.getType().equals("Potion")) {
-            character.setHealth(character.getHealth() + Item.getPower());
-            System.out.println("Votre personnage à gagné " + Item.getPower() + "hp");
-        }
-
-    }
+//    private void handleMysteryBox(Hero character, Items Item) {
+//        character.addToInventory(Item);
+//        System.out.println("Il y a une boite mystère contenant :" + Item);
+//
+//
+//        if (Item.getType().equals("Épée") && character instanceof Warrior && character.getOffensiveEquipment().getAttackPower() < Item.getPower()) {
+//            character.setOffensiveEquipment((OffensiveEquipment) Item);
+//            character.setAttackPower(character.getBaseAttackPower() + character.getOffensiveEquipment().getAttackPower());
+//            System.out.println("Vous aves maintenant " + Item + " équipée");
+//        }
+//
+//
+//        if (Item.getType().equals("Catalyseur") && character instanceof Wizard && character.getOffensiveEquipment().getAttackPower() < Item.getPower()) {
+//            character.setOffensiveEquipment((OffensiveEquipment) Item);
+//            character.setAttackPower(character.getBaseAttackPower() + character.getOffensiveEquipment().getAttackPower());
+//
+//            System.out.println("Vous aves maintenat " + Item + " équipée");
+//        }
+//
+//
+//        if (Item.getType().equals("Potion")) {
+//            character.setHealth(character.getHealth() + Item.getPower());
+//            System.out.println("Votre personnage à gagné " + Item.getPower() + "hp");
+//        }
+//
+//    }
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -1,13 +1,16 @@
 package all.Stuff;
 
 import all.hero.Hero;
+import all.hero.Warrior;
+import all.hero.Wizard;
+import all.Menu;
 
 public abstract class Items {
     private String name;
     private String type;
     private final int power;
 
-    public Items(String type, String name,int power) {
+    public Items(String type, String name, int power) {
         this.name = name;
         this.type = type;
         this.power = power;
@@ -39,5 +42,21 @@ public abstract class Items {
         return this.power;
     }
 
-    public abstract void equipHero(Hero character);
+
+    public void equipHero(Hero character) {
+        character.addToInventory(this);
+
+        if (this.getType().equals("Épée") && character instanceof Warrior && character.getOffensiveEquipment().getAttackPower() < this.getPower()) {
+            character.setOffensiveEquipment((OffensiveEquipment) this);
+        }
+
+        if (this.getType().equals("Catalyseur") && character instanceof Wizard && character.getOffensiveEquipment().getAttackPower() < this.getPower()) {
+            character.setOffensiveEquipment((OffensiveEquipment) this);
+        }
+
+        if (this.getType().equals("Potion")) {
+            character.setHealth(character.getHealth() + this.getPower());
+        }
+    }
 }
+

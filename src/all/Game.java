@@ -43,6 +43,8 @@ public class Game {
         } else {
             newCharacter = new Wizard(name, job, hasDefensiveEquipment);
         }
+        newCharacter.createHero();
+        newCharacter.getHeroes();
         newCharacter.displayCharacter();
         newCharacter.displayInventory();
 
@@ -65,6 +67,7 @@ public class Game {
         //Lance des tours jusqu'à avoir fini le plateau.
         while (boxIndex < 63) {
            boxIndex = playTurn(character,board, boxIndex);
+           character.editHero();
         }
 
         boolean goodResponse = false;

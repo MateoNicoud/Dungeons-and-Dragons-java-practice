@@ -24,18 +24,18 @@ public class Combat {
             System.out.println(ennemies.getName() + " attaque et inflige " + ennemies.getAttackPower() + "de dégats à "
                     + character.getName());
             character.setHealth(character.getHealth() - ennemies.getAttackPower());
-            if (ennemies.getHealth() <= 0) {
-                System.out.println("Le " + ennemies.getName() + " est mort");
-                System.out.println("il vous reste "+character.getHealth()+" points de vie");
+        }
+        if (ennemies.getHealth() <= 0 && character.getHealth()>0) {
+            System.out.println("Le " + ennemies.getName() + " est mort");
+            System.out.println("il vous reste "+character.getHealth()+" points de vie");
 //                boxes.get(currentBoxIndex).setEnnemies(null);
-            } else {
+        } else {
 
-                if (character.getHealth() <= 0) {
-                    System.out.println("Il vous as tuer, Game Over");
-                    System.exit(0);
-                }
-
+            if (character.getHealth() <= 0) {
+                System.out.println("Il vous as tuer, Game Over");
+                System.exit(0);
             }
+
         }
     }
 

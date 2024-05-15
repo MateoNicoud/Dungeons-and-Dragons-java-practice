@@ -11,6 +11,6 @@ public class Main {
         do {
             game.play(character);
         } while (!game.getGameState().equals(Game.State.FINISHED));
-
+        character.deleteHero();
     }
 }

@@ -1,5 +1,11 @@
 package all;
 
+import all.Stuff.Items;
+import all.Stuff.OffensiveEquipment;
+import all.hero.Hero;
+import all.hero.Warrior;
+import all.hero.Wizard;
+
 import java.util.Scanner;
 
 
@@ -114,6 +120,24 @@ public class Menu {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void printMysteryBox(Items item){
+        System.out.println("Il y a une boite mystère contenant :" + item.getName());
+    }
+
+    public void printEquipHero(Hero character, Items item){
+        if (item.getType().equals("Épée") && character instanceof Warrior && character.getOffensiveEquipment().getAttackPower() < item.getPower()) {
+            System.out.println("Vous avez maintenant " + item + " équipée");
+        }
+
+        if (item.getType().equals("Catalyseur") && character instanceof Wizard && character.getOffensiveEquipment().getAttackPower() < item.getPower()) {
+            System.out.println("Vous avez maintenant " + item + " équipée");
+        }
+
+        if (item.getType().equals("Potion")) {
+            System.out.println("Votre personnage a gagné " + item.getPower() + "hp");
         }
     }
 }

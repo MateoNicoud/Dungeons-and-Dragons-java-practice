@@ -21,7 +21,7 @@ public class MysteryBox implements Box {
         items.add(new ArcaneShield());
     }
 
-    public Items getRandomItem(){
+    public Items getRandomItem(Board board){
         int max = items.size();
         int randomNumber = (int) (Math.random()*max);
         return items.get(randomNumber);
@@ -33,8 +33,15 @@ public class MysteryBox implements Box {
 
     @Override
     public void interaction(Hero character, Board board) {
-        Items randomItem = getRandomItem();
+        Items randomItem = getRandomItem(board);
+        character.addToInventory(randomItem);
+
+        Menu menu = new Menu();
+        menu.printMysteryBox(randomItem);
+        menu.printEquipHero(character, randomItem);
         randomItem.equipHero(character);
+        character.setAttackPower(character.getBaseAttackPower() + character.getOffensiveEquipment().getAttackPower());
+
     }
 
     @Override
