@@ -1,8 +1,12 @@
 package all;
 
+import all.Ennemies.Ennemies;
+import all.Stuff.Items;
+import all.board.Box;
 import all.hero.Hero;
 import all.hero.Warrior;
 import all.hero.Wizard;
+import all.RequestDatabase;
 
 
 public class Game {
@@ -52,24 +56,39 @@ public class Game {
     public void play(Hero character) {
 
 
+        RequestDatabase request = new RequestDatabase();
+        request.deleteAllData();
         Board board = new Board();
-        board.placeCharacterAtStart(character);
-        character.deleteHero();
-        character.createHero(board, character);
-        character.getHeroes();
+            board.placeCharacterAtStart(character);
+        request.createHero(board, character);
+        request.insertOffensiveEquipment(character, character.getOffensiveEquipment());
+        request.insertDefensiveEquipment(character, character.getDefensiveEquipment());
 
-
-//        board.getBox(0).setCharacter(character);
-
+        for (int i = 0; i < board.getBoardSize(); i++) {
+            request.createBox(board,character,i);
+        }
+        for (int i = 0; i < board.getBoardSize(); i++) {
+            Box box = board.getBox(i);
+            if (box instanceof Ennemies ennemies) {
+                request.editEnnemie(ennemies, board, i);
+            }
+            if (box instanceof MysteryBox mysteryBox) {
+                Items item = mysteryBox.getRandomItem();
+                request.insertMysteryBox(item, board, i);
+            }
+        }
 
 
         int boxIndex = board.getBoxOfCharacter(character);
 
         //Lance des tours jusqu'à avoir fini le plateau.
         while (boxIndex < 63) {
-           boxIndex = playTurn(character,board, boxIndex);
-           character.editHero(board, character);
+            boxIndex = playTurn(character,board, boxIndex);
+            request.editHero(board, character);
+            request.editOffensiveEquipment(character, character.getOffensiveEquipment());
+            request.editDefensiveEquipment(character, character.getDefensiveEquipment());
         }
+
 
         boolean goodResponse = false;
         while (!goodResponse) {

@@ -14,9 +14,6 @@ import all.Ennemies.Sorcerer;
 import all.Stuff.Consumables.GreatPotion;
 import all.Stuff.Consumables.StandardPotion;
 import all.Stuff.Items;
-import all.hero.Warrior;
-import all.hero.Wizard;
-import all.Stuff.OffensiveEquipment;
 
 import java.util.ArrayList;
 
@@ -45,9 +42,14 @@ public class Board {
     private ArrayList<Box> boxes;
 
     public Board() {
+        RequestDatabase request = new RequestDatabase();
+
         boardInit();
         placeEnnemies();
+
+
         placeMysteryBox();
+
     }
 
     public void addBox(Box box) {
@@ -81,6 +83,7 @@ public class Board {
         }
 
         this.boxes.set(random, mysteryBox);
+
     }
 
     public void placeMysteryBox() {
