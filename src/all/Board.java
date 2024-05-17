@@ -39,17 +39,27 @@ public class Board {
 
     private int currentBoxIndex;
 
+    public ArrayList<Box> getBoxes() {
+        return boxes;
+    }
+
+    public void setBoxes(ArrayList<Box> boxes) {
+        this.boxes = boxes;
+    }
+
     private ArrayList<Box> boxes;
 
-    public Board() {
+    public Board(Boolean newGame) {
         RequestDatabase request = new RequestDatabase();
+        boxes = new ArrayList<Box>();
+        boardInit(boxes);
 
-        boardInit();
-        placeEnnemies();
-
-
-        placeMysteryBox();
-
+        if (!newGame){
+            request.getEnnemyFromDatabase(this,1,boxes);
+        } else {
+            placeEnnemies();
+            placeMysteryBox();
+        }
     }
 
     public void addBox(Box box) {
@@ -64,12 +74,12 @@ public class Board {
         return this.boxes.size();
     }
 
-    private void boardInit(){
-        boxes = new ArrayList<Box>();
+    private ArrayList<Box>  boardInit(ArrayList<Box> boxes){
         for (int i = 0; i < 64; i++) {
             Box box = new EmptyBox();
             boxes.add(box);
         }
+        return boxes;
     }
     private void placeItemInRandomBox(MysteryBox mysteryBox) {
         boolean boxEmpty = false;

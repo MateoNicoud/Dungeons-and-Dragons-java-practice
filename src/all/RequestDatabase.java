@@ -1,15 +1,20 @@
 package all;
 
 import all.Ennemies.Ennemies;
+import all.Ennemies.LoadedEnnemie;
+import all.Stuff.DefensiveEquipement.LoadedShield;
 import all.Stuff.DefensiveEquipment;
 import all.Stuff.Items;
 import all.Stuff.OffensiveEquipment;
+import all.board.Box;
+import all.board.EmptyBox;
 import all.hero.Hero;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class RequestDatabase {
     public RequestDatabase() {
@@ -370,5 +375,32 @@ public class RequestDatabase {
             e.printStackTrace();
         }
     }
+
+    public void getEnnemyFromDatabase(Board board, int boardId, ArrayList<Box> boxes) {
+        String sql = "SELECT Ennemy.* \n" +
+                "FROM Ennemy\n" +
+                "JOIN `case` ON Ennemy.case_id = `case`.id \n" +
+                "\n";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("Ennemy");
+                int healthPoint = resultSet.getInt("healthPoint");
+                int attackPower = resultSet.getInt("attackPower");
+
+                Ennemies ennemy = new LoadedEnnemie(name, attackPower, healthPoint);
+                boxes.set(resultSet.getInt("case_id"), ennemy); // Ajoute l'ennemi à la case correspondante dans l'ArrayList
+
+                System.out.println("Ennemi ajouté à la case : " + resultSet.getInt("case_id")); // Ajoute une instruction d'impression pour vérifier si l'ennemi est ajouté
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

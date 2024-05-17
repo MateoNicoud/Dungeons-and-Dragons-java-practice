@@ -1,7 +1,6 @@
 package all;
 
 import all.Stuff.Items;
-import all.Stuff.OffensiveEquipment;
 import all.hero.Hero;
 import all.hero.Warrior;
 import all.hero.Wizard;
@@ -139,5 +138,33 @@ public class Menu {
         if (item.getType().equals("Potion")) {
             System.out.println("Votre personnage a gagné " + item.getPower() + "hp");
         }
+    }
+
+    public String firstChoice(){
+        System.out.println("Bonjour que voulez vous faire ?");
+        String userChoice = "";
+        String input;
+        do {
+            System.out.println("""
+                1. Continuer
+                2. Nouvelle partie
+                3. Quitter le jeu""");
+
+            input = reader.nextLine();
+
+            switch (input) {
+                case "1":
+                    userChoice="continue";
+                    break;
+                case "2":
+                    userChoice="new game";
+                    break;
+                case "3":
+                    System.out.println("Fermeture du jeu");
+                    System.exit(0);
+                    break;
+            }
+        } while (!input.equals("1") && !input.equals("2"));
+        return userChoice;
     }
 }
