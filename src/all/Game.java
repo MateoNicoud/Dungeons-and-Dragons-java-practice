@@ -47,6 +47,7 @@ public class Game {
         } else {
             newCharacter = new Wizard(name, job, hasDefensiveEquipment);
         }
+
         newCharacter.displayCharacter();
         newCharacter.displayInventory();
 
@@ -64,13 +65,14 @@ public class Game {
         request.insertOffensiveEquipment(character, character.getOffensiveEquipment());
         request.insertDefensiveEquipment(character, character.getDefensiveEquipment());
 
+
         for (int i = 0; i < board.getBoardSize(); i++) {
             request.createBox(board,character,i);
         }
         for (int i = 0; i < board.getBoardSize(); i++) {
             Box box = board.getBox(i);
             if (box instanceof Ennemies ennemies) {
-                request.editEnnemie(ennemies, board, i);
+                request.insertEnnemie(ennemies, board, i);
             }
             if (box instanceof MysteryBox mysteryBox) {
                 Items item = mysteryBox.getRandomItem();
@@ -81,12 +83,18 @@ public class Game {
 
         int boxIndex = board.getBoxOfCharacter(character);
 
+        request.insertBoard(character, board.getBoxOfCharacter(character), 1);
         //Lance des tours jusqu'à avoir fini le plateau.
         while (boxIndex < 63) {
             boxIndex = playTurn(character,board, boxIndex);
             request.editHero(board, character);
             request.editOffensiveEquipment(character, character.getOffensiveEquipment());
             request.editDefensiveEquipment(character, character.getDefensiveEquipment());
+            Box box = board.getBox(boxIndex);
+            if (box instanceof Ennemies ennemies) {
+                request.editEnnemie(ennemies, boxIndex);
+            }
+            request.editBoard(character, boxIndex, 1);
         }
 
 

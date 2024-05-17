@@ -12,9 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RequestDatabase {
-    public RequestDatabase(){
+    public RequestDatabase() {
 
     }
+
     public void createHero(Board board, Hero character) {
         String sql = "INSERT INTO hero (id, name, job, healthPoint, attackPower, defensePower, Position) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = all.DatabaseConnection.getConnection()) {
@@ -120,6 +121,7 @@ public class RequestDatabase {
             e.printStackTrace();
         }
     }
+
     public void getDefensiveEquipments() {
         String sql = "SELECT id,name,type,defensePower FROM defensiveEquipement";
         try (Connection connection = all.DatabaseConnection.getConnection()) {
@@ -154,7 +156,7 @@ public class RequestDatabase {
         }
     }
 
-    public void editDefensiveEquipment(Hero character,DefensiveEquipment defensiveEquipment) {
+    public void editDefensiveEquipment(Hero character, DefensiveEquipment defensiveEquipment) {
         String sql = "UPDATE defensiveEquipement SET name = ?, type = ?, defensePower = ? WHERE Hero_id = ?";
 
         try (Connection connection = all.DatabaseConnection.getConnection()) {
@@ -219,7 +221,7 @@ public class RequestDatabase {
         }
     }
 
-    public void editOffensiveEquipment(Hero character,OffensiveEquipment offensiveEquipment) {
+    public void editOffensiveEquipment(Hero character, OffensiveEquipment offensiveEquipment) {
         String sql = "UPDATE offensiveEquipement SET name = ?, type = ?, attackPower = ? WHERE Hero_id = ?";
 
         try (Connection connection = all.DatabaseConnection.getConnection()) {
@@ -249,16 +251,40 @@ public class RequestDatabase {
             e.printStackTrace();
         }
     }
-    public void editBoard(Hero character,Board board, int id) {
-        String sql = "UPDATE board SET id = ? WHERE Hero_id=? && case_id=?";
+
+    public void editBoard(Hero character, int id_case, int id) {
+        String sql = "UPDATE board SET Hero_id = ?, case_id = ? WHERE id = ?";
 
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, System.identityHashCode(board));
-            statement.setInt(2, character.getId());
+            statement.setInt(1, character.getId());
+            statement.setInt(2, id_case);
             statement.setInt(3, id);
             statement.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertBoard(Hero character, int id_case, int id) {
+        String checkSql = "SELECT id FROM `case` WHERE id = ?";
+        String insertSql = "INSERT INTO board (id,Hero_id,case_id) VALUES (?,?,?)";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+            checkStatement.setInt(1, id_case);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                PreparedStatement insertStatement = connection.prepareStatement(insertSql);
+                insertStatement.setInt(1, id);
+                insertStatement.setInt(2, character.getId());
+                insertStatement.setInt(3, id_case);
+                insertStatement.executeUpdate();
+            } else {
+                System.out.println("case_id does not exist in the case table");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -281,6 +307,7 @@ public class RequestDatabase {
             e.printStackTrace();
         }
     }
+
     public void insertMysteryBox(Items item, Board board, int id) {
         String checkSql = "SELECT id FROM `case` WHERE id = ?";
         String insertSql = "INSERT INTO MysteryBox (id, item, type, power, case_id)VALUES (?,?,?,?,?)";
@@ -305,15 +332,38 @@ public class RequestDatabase {
             e.printStackTrace();
         }
     }
-    public void editEnnemie(Ennemies ennemie, Board board, int id) {
-        String sql = "UPDATE Ennemy SET id = ?, Ennemy = ?, healthPoint=?, attackPower=? WHERE case_id= ?";
+
+    public void insertEnnemie(Ennemies ennemie, Board board, int id) {
+        String checkSql = "SELECT id FROM `case` WHERE id = ?";
+        String insertSql = "INSERT INTO Ennemy (id, Ennemy, healthPoint, attackPower, case_id)VALUES (?,?,?,?,?)";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+            checkStatement.setInt(1, id);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                PreparedStatement insertStatement = connection.prepareStatement(insertSql);
+                insertStatement.setInt(1, System.identityHashCode(board.getBox(id)));
+                insertStatement.setString(2, ennemie.getName());
+                insertStatement.setInt(3, ennemie.getHealth());
+                insertStatement.setInt(4, ennemie.getAttackPower());
+                insertStatement.setInt(5, id);
+                insertStatement.executeUpdate();
+            } else {
+                System.out.println("case_id does not exist in the case table");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editEnnemie(Ennemies ennemie, int id) {
+        String sql = "UPDATE Ennemy SET healthPoint=? WHERE case_id= ?";
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, System.identityHashCode(board.getBox(id)));
-            statement.setString(2, ennemie.getName());
-            statement.setInt(3, ennemie.getHealth());
-            statement.setInt(4, ennemie.getAttackPower());
-            statement.setInt(5,id);
+            statement.setInt(1, ennemie.getHealth());
+            statement.setInt(2, id);
             statement.executeUpdate();
 
         } catch (SQLException e) {
