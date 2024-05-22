@@ -2,6 +2,7 @@ package all;
 
 import all.Ennemies.Ennemies;
 import all.hero.Hero;
+import all.RequestDatabase;
 
 public class Combat {
     public Combat(Ennemies ennemie, Hero hero,Board board){
@@ -32,6 +33,8 @@ public class Combat {
         } else {
 
             if (character.getHealth() <= 0) {
+                RequestDatabase request = new RequestDatabase();
+                request.deleteAllData();
                 System.out.println("Il vous as tuer, Game Over");
                 System.exit(0);
             }
@@ -50,6 +53,8 @@ public class Combat {
         character.setHealth(character.getHealth() - damage);
         System.out.println("il vous reste " + character.getHealth() + " HP");
         if (character.getHealth() <= 0) {
+            RequestDatabase request = new RequestDatabase();
+            request.deleteAllData();
             System.out.println("Il vous as tuer, Game Over");
             System.exit(0);
         } else {

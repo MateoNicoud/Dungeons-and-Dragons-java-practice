@@ -167,4 +167,27 @@ public class Menu {
         } while (!input.equals("1") && !input.equals("2"));
         return userChoice;
     }
+    public String emptySave(){
+        System.out.println("Bonjour que voulez vous faire ?");
+        String userChoice = "";
+        String input;
+        do {
+            System.out.println("""
+                1. Nouvelle partie
+                2. Quitter le jeu""");
+
+            input = reader.nextLine();
+
+            switch (input) {
+                case "1":
+                    userChoice="new game";
+                    break;
+                case "2":
+                    System.out.println("Fermeture du jeu");
+                    System.exit(0);
+                    break;
+            }
+        } while (!input.equals("1"));
+        return userChoice;
+    }
 }

@@ -98,6 +98,44 @@ classDiagram
     class Main {
         +void main(String[] args)
     }
+    class DatabaseConnection{
+        +getConnection()
+        -String DATABASE_URL
+        -String DATABASE_USER 
+        -String DATABASE_PASSWORD
+    }
+    class RequestDatabase{
+    +RequestDatabase()
+    +void createHero(Board board, Hero character)
+    +void getHeroes()
+    +void editHero(Board board, Hero character) 
+    +void deleteAllData()
+    +void deleteHero() 
+    +void deleteDefensiveEquipement() 
+    +void deleteOffensiveEquipement()
+    +void deleteBoard()
+    +void deleteCase()
+    +void deleteMysteryBox()
+    +void deleteEnnemie()
+    +void executeUpdate(String sql) 
+    +void getDefensiveEquipments() 
+    +void insertDefensiveEquipment(Hero character, DefensiveEquipment defensiveEquipment)
+    +void editDefensiveEquipment(Hero character, DefensiveEquipment defensiveEquipment)
+    +deleteDefensiveEquipment(int id) 
+    +void getOffensiveEquipments() 
+    +insertOffensiveEquipment(Hero character, OffensiveEquipment offensiveEquipment)
+    +editOffensiveEquipment(Hero character, OffensiveEquipment offensiveEquipment)
+    +deleteDOffensiveEquipment(Hero character) 
+    +editBoard(Hero character, int id_case, int id)
+    +void insertBoard(Hero character, int id_case, int id)
+    +void createBox(Board board, Hero character, int id)
+    +insertMysteryBox(Items item, Board board, int id)
+    +insertEnnemie(Ennemies ennemie, Board board, int id)
+    +editEnnemie(Ennemies ennemie, int id)
+    +void getEnnemyFromDatabase(Board board, int boardId, ArrayList<Box> boxes)
+    +void getMysteryBoxFromDatabase(Board board, int boardId, ArrayList<Box> boxes)
+    +void getHeroPosition(int boardId)
+    }
     hero <|-- Warrior
     hero *-- Inventory
     hero *-- OffensiveEquipment
@@ -112,3 +150,5 @@ classDiagram
     CharacterOutOfBounds ..> Game : throws
     Game *-- Menu
     Main *-- Game
+    Game *-- RequestDatabase
+    RequestDatabase *-- DatabaseConnection

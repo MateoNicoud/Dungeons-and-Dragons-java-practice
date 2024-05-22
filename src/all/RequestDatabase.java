@@ -2,6 +2,7 @@ package all;
 
 import all.Ennemies.Ennemies;
 import all.Ennemies.LoadedEnnemie;
+import all.Stuff.DefensiveEquipement.LoadedShield;
 import all.Stuff.DefensiveEquipment;
 import all.Stuff.Items;
 import all.Stuff.OffensiveEquipement.LoadedOffensive;
@@ -9,6 +10,8 @@ import all.Stuff.OffensiveEquipment;
 import all.board.Box;
 import all.hero.Hero;
 import all.Stuff.Consumables.LoadedConsumable;
+import all.hero.Warrior;
+import all.hero.Wizard;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -395,7 +398,7 @@ public class RequestDatabase {
                 boxes.set(resultSet.getInt("case_id"), ennemy);
                 ennemy.setId(resultSet.getInt("Ennemy.id"));
 
-                System.out.println("Ennemi ajouté à la case : " + resultSet.getInt("case_id")); // Ajoute une instruction d'impression pour vérifier si l'ennemi est ajouté
+//                System.out.println("Ennemi ajouté à la case : " + resultSet.getInt("case_id")); // Ajoute une instruction d'impression pour vérifier si l'ennemi est ajouté
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -431,7 +434,7 @@ public class RequestDatabase {
                 boxes.set(resultSet.getInt("case_id"), mysteryBox);
                 mysteryBox.setId(resultSet.getInt("MysteryBox.id"));
 
-                System.out.println("MysteryBox added to box: " + resultSet.getInt("case_id"));
+//                System.out.println("MysteryBox added to box: " + resultSet.getInt("case_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -439,7 +442,7 @@ public class RequestDatabase {
     }
 
     public int getHeroPosition(int boardId){
-        int position = 0;
+        int position = -1;
         String sql = "SELECT hero.* FROM hero JOIN board ON hero.id = board.Hero_id WHERE board.id = ?";
 
         try (Connection connection = all.DatabaseConnection.getConnection()) {
@@ -456,6 +459,71 @@ public class RequestDatabase {
 
         return position;
 
+    }
+    public Hero getHeroFromDatabase(int boardId) {
+        Hero hero = null;
+        String sql = "SELECT hero.* FROM hero JOIN board ON hero.id = board.Hero_id WHERE board.id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, boardId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String job = resultSet.getString("Job");
+                int healthPoint = resultSet.getInt("healthPoint");
+                int attackPower = resultSet.getInt("attackPower");
+                int defensePower = resultSet.getInt("defensePower");
+                int id =resultSet.getInt("id");
+                boolean secondaryHand = false;
+
+                if (job.equals("guerrier")) {
+                    hero = new Warrior(name, job, secondaryHand);
+                } else {
+                    hero = new Wizard(name, job, secondaryHand);
+                }
+
+                hero.setHealth(healthPoint);
+                hero.setAttackPower(attackPower);
+                hero.setDefensePower(defensePower);
+                hero.setId(id);
+
+                // Get offensive equipment
+                sql = "SELECT * FROM offensiveEquipement WHERE Hero_id = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, hero.getId());
+                resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    String nameOffensive = resultSet.getString("name");
+                    int attackPowerOffensive = resultSet.getInt("attackPower");
+                    String typeOffensive = resultSet.getString("type");
+
+                    OffensiveEquipment offensiveEquipment = new LoadedOffensive(typeOffensive, nameOffensive, attackPowerOffensive);
+                    hero.setOffensiveEquipment(offensiveEquipment);
+                }
+
+                // Get defensive equipment
+                sql = "SELECT * FROM defensiveEquipement WHERE Hero_id = ?";
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, hero.getId());
+                resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    String nameDefensive = resultSet.getString("name");
+                    int defensePowerDefensive = resultSet.getInt("defensePower");
+                    String typeDefensive = resultSet.getString("type");
+
+                    DefensiveEquipment defensiveEquipment = new LoadedShield(typeDefensive, nameDefensive, defensePowerDefensive);
+                    hero.setDefensiveEquipment(defensiveEquipment);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return hero;
     }
 
 

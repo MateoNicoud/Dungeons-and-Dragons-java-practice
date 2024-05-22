@@ -26,6 +26,16 @@ public class Game {
 
     private final Menu menu;
 
+    public boolean isNewGame() {
+        return newGame;
+    }
+
+    public void setNewGame(boolean newGame) {
+        this.newGame = newGame;
+    }
+
+    private boolean newGame;
+
     public State getGameState() {
         return gameState;
     }
@@ -62,78 +72,14 @@ public class Game {
     }
 
 
-    public Hero getHeroFromDatabase(int boardId) {
-        Hero hero = null;
-        String sql = "SELECT hero.* FROM hero JOIN board ON hero.id = board.Hero_id WHERE board.id = ?";
-
-        try (Connection connection = all.DatabaseConnection.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, boardId);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String job = resultSet.getString("Job");
-                int healthPoint = resultSet.getInt("healthPoint");
-                int attackPower = resultSet.getInt("attackPower");
-                int defensePower = resultSet.getInt("defensePower");
-                int id =resultSet.getInt("id");
-                boolean secondaryHand = false;
-
-                if (job.equals("guerrier")) {
-                    hero = new Warrior(name, job, secondaryHand);
-                } else {
-                    hero = new Wizard(name, job, secondaryHand);
-                }
-
-                hero.setHealth(healthPoint);
-                hero.setAttackPower(attackPower);
-                hero.setDefensePower(defensePower);
-                hero.setId(id);
-
-                // Get offensive equipment
-                sql = "SELECT * FROM offensiveEquipement WHERE Hero_id = ?";
-                statement = connection.prepareStatement(sql);
-                statement.setInt(1, hero.getId());
-                resultSet = statement.executeQuery();
-
-                if (resultSet.next()) {
-                    String nameOffensive = resultSet.getString("name");
-                    int attackPowerOffensive = resultSet.getInt("attackPower");
-                    String typeOffensive = resultSet.getString("type");
-
-                    OffensiveEquipment offensiveEquipment = new LoadedOffensive(typeOffensive, nameOffensive, attackPowerOffensive);
-                    hero.setOffensiveEquipment(offensiveEquipment);
-                }
-
-                // Get defensive equipment
-                sql = "SELECT * FROM defensiveEquipement WHERE Hero_id = ?";
-                statement = connection.prepareStatement(sql);
-                statement.setInt(1, hero.getId());
-                resultSet = statement.executeQuery();
-
-                if (resultSet.next()) {
-                    String nameDefensive = resultSet.getString("name");
-                    int defensePowerDefensive = resultSet.getInt("defensePower");
-                    String typeDefensive = resultSet.getString("type");
-
-                    DefensiveEquipment defensiveEquipment = new LoadedShield(typeDefensive, nameDefensive, defensePowerDefensive);
-                    hero.setDefensiveEquipment(defensiveEquipment);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return hero;
-    }
 
 
-    public void play(Hero character, Boolean newGame) {
+
+    public void play(Hero character) {
 
         RequestDatabase request = new RequestDatabase();
         Board board;
-        if(!newGame){
+        if(!this.newGame){
             board = new Board(false);
             board.placeCharacterAtStart(character, request.getHeroPosition(1));
         } else {
@@ -193,6 +139,7 @@ public class Game {
                 }
                 case "oui" -> {
                     System.out.println("Redémarrage de la partie");
+                    this.newGame=true;
                     goodResponse = true;
                 }
                 case "menu" -> menu.displayMenu();
