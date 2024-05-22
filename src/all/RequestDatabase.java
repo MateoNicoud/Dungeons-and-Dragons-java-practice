@@ -2,13 +2,13 @@ package all;
 
 import all.Ennemies.Ennemies;
 import all.Ennemies.LoadedEnnemie;
-import all.Stuff.DefensiveEquipement.LoadedShield;
 import all.Stuff.DefensiveEquipment;
 import all.Stuff.Items;
+import all.Stuff.OffensiveEquipement.LoadedOffensive;
 import all.Stuff.OffensiveEquipment;
 import all.board.Box;
-import all.board.EmptyBox;
 import all.hero.Hero;
+import all.Stuff.Consumables.LoadedConsumable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -368,7 +368,7 @@ public class RequestDatabase {
         try (Connection connection = all.DatabaseConnection.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, ennemie.getHealth());
-            statement.setInt(2, id);
+            statement.setInt(2, ennemie.getId());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -392,13 +392,70 @@ public class RequestDatabase {
                 int attackPower = resultSet.getInt("attackPower");
 
                 Ennemies ennemy = new LoadedEnnemie(name, attackPower, healthPoint);
-                boxes.set(resultSet.getInt("case_id"), ennemy); // Ajoute l'ennemi à la case correspondante dans l'ArrayList
+                boxes.set(resultSet.getInt("case_id"), ennemy);
+                ennemy.setId(resultSet.getInt("Ennemy.id"));
 
                 System.out.println("Ennemi ajouté à la case : " + resultSet.getInt("case_id")); // Ajoute une instruction d'impression pour vérifier si l'ennemi est ajouté
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getMysteryBoxFromDatabase(Board board, int boardId, ArrayList<Box> boxes) {
+        String sql = "SELECT MysteryBox.* FROM MysteryBox JOIN `case` ON MysteryBox.case_id = `case`.id";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("item");
+                String type = resultSet.getString("type");
+                int power = resultSet.getInt("power");
+                Items item = null;
+                switch(type){
+                    case "Épée":
+                        case "Catalyseur":
+                        item = new LoadedOffensive(name, type, power);
+                        break;
+                    case "Potion":
+                        item = new LoadedConsumable(name, type, power);
+                        break;
+                }
+
+
+                MysteryBox mysteryBox = new MysteryBox();
+                mysteryBox.addItems(item);
+
+                boxes.set(resultSet.getInt("case_id"), mysteryBox);
+                mysteryBox.setId(resultSet.getInt("MysteryBox.id"));
+
+                System.out.println("MysteryBox added to box: " + resultSet.getInt("case_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getHeroPosition(int boardId){
+        int position = 0;
+        String sql = "SELECT hero.* FROM hero JOIN board ON hero.id = board.Hero_id WHERE board.id = ?";
+
+        try (Connection connection = all.DatabaseConnection.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, boardId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                position = resultSet.getInt("position");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return position;
+
     }
 
 

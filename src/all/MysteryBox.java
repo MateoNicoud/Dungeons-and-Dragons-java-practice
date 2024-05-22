@@ -13,12 +13,21 @@ import java.util.*;
 public class MysteryBox implements Box {
     private Hero character;
     public List<Items> items;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private int id = System.identityHashCode(this);
     public MysteryBox(){
         items=new ArrayList<>();
-        items.add(new WoodStick());
-        items.add(new PaperCraftShield());
-        items.add(new FoamSword());
-        items.add(new ArcaneShield());
+    }
+    public void addItems(Items item){
+        this.items.add(item);
     }
 
     public Items getRandomItem(){

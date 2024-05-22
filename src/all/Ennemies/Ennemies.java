@@ -28,6 +28,16 @@ public abstract class Ennemies implements Box {
 
     private int attackPower;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private int id = System.identityHashCode(this);
+
     public int getHealth() {
         return health;
     }

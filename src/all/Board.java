@@ -56,6 +56,7 @@ public class Board {
 
         if (!newGame){
             request.getEnnemyFromDatabase(this,1,boxes);
+            request.getMysteryBoxFromDatabase(this, 1,  boxes);
         } else {
             placeEnnemies();
             placeMysteryBox();
@@ -192,9 +193,9 @@ public class Board {
         return -1;
     }
 
-    public void placeCharacterAtStart(Hero character) {
-        if (boxes.size() > 0) {
-            boxes.get(0).setCharacter(character);
+    public void placeCharacterAtStart(Hero character, int position) {
+        if (boxes.size() > position) {
+            boxes.get(position).setCharacter(character);
         }
     }
 

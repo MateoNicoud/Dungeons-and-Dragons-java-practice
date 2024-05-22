@@ -77,6 +77,7 @@ public class Game {
                 int healthPoint = resultSet.getInt("healthPoint");
                 int attackPower = resultSet.getInt("attackPower");
                 int defensePower = resultSet.getInt("defensePower");
+                int id =resultSet.getInt("id");
                 boolean secondaryHand = false;
 
                 if (job.equals("guerrier")) {
@@ -88,6 +89,7 @@ public class Game {
                 hero.setHealth(healthPoint);
                 hero.setAttackPower(attackPower);
                 hero.setDefensePower(defensePower);
+                hero.setId(id);
 
                 // Get offensive equipment
                 sql = "SELECT * FROM offensiveEquipement WHERE Hero_id = ?";
@@ -133,14 +135,16 @@ public class Game {
         Board board;
         if(!newGame){
             board = new Board(false);
+            board.placeCharacterAtStart(character, request.getHeroPosition(1));
         } else {
             request.deleteAllData();
             board = new Board(true);
-            board.placeCharacterAtStart(character);
+            board.placeCharacterAtStart(character,0);
             request.createHero(board, character);
             request.insertOffensiveEquipment(character, character.getOffensiveEquipment());
-            request.insertDefensiveEquipment(character, character.getDefensiveEquipment());
-
+            if (character.getIsSecondaryHand()) {
+                request.insertDefensiveEquipment(character, character.getDefensiveEquipment());
+            }
 
             for (int i = 0; i < board.getBoardSize(); i++) {
                 request.createBox(board, character, i);
@@ -166,7 +170,9 @@ public class Game {
             boxIndex = playTurn(character,board, boxIndex);
             request.editHero(board, character);
             request.editOffensiveEquipment(character, character.getOffensiveEquipment());
-            request.editDefensiveEquipment(character, character.getDefensiveEquipment());
+            if (character.getIsSecondaryHand()) {
+                request.editDefensiveEquipment(character, character.getDefensiveEquipment());
+            }
             Box box = board.getBox(boxIndex);
             if (box instanceof Ennemies ennemies) {
                 request.editEnnemie(ennemies, boxIndex);
