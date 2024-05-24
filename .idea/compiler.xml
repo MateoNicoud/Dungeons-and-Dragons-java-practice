@@ -7,7 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Dungeons&amp;Dragons" />
+        <module name="DungeonsDragons" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Dungeons&amp;Dragons" target="22" />
+    </bytecodeTargetLevel>
   </component>
 </project>
