@@ -1,0 +1,26 @@
+
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: some-mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: my-secret-pw
+      MARIADB_DATABASE: dd
+    ports:
+      - "3606:3306"
+    volumes:
+      - ./mariadb:/docker-entrypoint-initdb.d
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
+
+volumes:
+  mariadb_data:
+
